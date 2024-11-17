@@ -1,97 +1,62 @@
 "use client";
-import { ArrowRight, BookCopy, SquareArrowOutUpRight } from "lucide-react";
-import { useRef, useEffect, useState } from "react";
-import Link from "next/link";
+
+import { useContext, useEffect, useRef } from "react";
+import Context from "../../ContextAPI";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 import Typed from "typed.js";
+
 export default function Home() {
-  const Reference = useRef<HTMLInputElement | null>(null);
-  const [GeneratedLink, setGeneratedLink] = useState<string | null>(null);
-  const [MainLink, setMainLink] = useState<string>("");
-  async function HandleLink() {
-    if (MainLink.length === 0 || !MainLink.includes("http")) {
-      alert("Please Enter a Valid URL");
-      return;
-    } else {
-      let MyString: string | undefined = "";
-      for (let index = 0; index < 10; index++) {
-        MyString = MyString.at(Math.random() * 90 - 30);
-      }
-    }
-  }
+  const { User } = useContext(Context);
+  const { data: session } = useSession();
+  const typedRef = useRef(null);
+
   useEffect(() => {
-    let typed: Typed | undefined;
-    if (Reference.current) {
-      typed = new Typed(Reference.current, {
-        strings: [
-          "Shorten Your Link",
-          "Paste Your Long URL",
-          "Get a Short Link",
-          "Transform Your URLs",
-          "Make Your URL Short",
-          "Enter Your URL Here",
-        ],
-        typeSpeed: 50,
-        loop: true,
-        backSpeed: 50,
-        attr: "placeholder",
-      });
-    }
+    const options = {
+      strings: [
+        "Welcome To Shortify",
+        "Shortify your URLs with ease",
+        "Streamline your online experience",
+        "Fast, reliable, and efficient",
+        "A free plan awaits you",
+      ],
+      typeSpeed: 50,
+      backSpeed: 50,
+      loop: true,
+    };
+
+    const typed = new Typed(typedRef.current, options);
 
     return () => {
-      // Destroy Typed instance during cleanup to stop animation
-      if (typed) {
-        typed.destroy();
-      }
+      typed.destroy();
     };
-    // console.log(Reference.current?.value);
   }, []);
 
+  if (session || User) {
+    redirect("/Generate");
+  }
+
   return (
-    <div className="min-h-[80vh] flex justify-center items-center">
-      <div className="flex flex-col gap-3">
-        <h1 className="text-4xl text-center font-bold">Welcome To Shortify</h1>
-        <p className="text-lg text-center">
-          Shortify is an efficient and easy-to-use URL shortening sercive that
-          streamlines your online experience.
-        </p>
-        <div className="flex items-center gap-3">
-          <input
-            type="text"
-            value={MainLink}
-            onChange={(e) => setMainLink(e.target.value)}
-            className="bg-slate-950 p-3 rounded-lg text-white w-[40vw] border border-gray-600"
-            ref={Reference}
-          />
-          <div
-            className="bg-blue-950 p-4 rounded-full cursor-pointer"
-            onClick={HandleLink}
-          >
-            <ArrowRight />
-          </div>
-        </div>
-        {GeneratedLink && (
-          <div className="flex items-center flex-col gap-3 my-3">
-            <h2 className="text-xl font-bold">Your Link : -</h2>
-            <p className="text-lg flex justify-center items-center gap-3">
-              <input
-                disabled
-                type="text"
-                value={GeneratedLink}
-                className="md:w-[30vw]  text-blue-500 disabled:bg-slate-700 p-3 rounded-lg border border-gray-600"
-              />
-              <Link target="_blank" href={GeneratedLink}>
-                <SquareArrowOutUpRight />
-              </Link>
-              <BookCopy
-                className="cursor-pointer"
-                onClick={() => {
-                  navigator.clipboard.writeText(GeneratedLink);
-                }}
-              />
-            </p>
-          </div>
-        )}
-      </div>
+    <div className="min-h-[85vh] flex flex-col justify-center items-center">
+      <h1 className="text-5xl text-center font-extrabold text-white drop-shadow-md">
+        <span ref={typedRef}></span>
+      </h1>
+      <p className="text-lg text-center text-white mt-4 max-w-2xl drop-shadow-md">
+        Shortify is an efficient and easy-to-use URL shortening service that
+        streamlines your online experience.
+      </p>
+      <p className="text-lg text-center text-white mt-4 max-w-2xl drop-shadow-md">
+        Sign up now to access our free plan and start shortening your URLs with
+        ease. Enjoy up to 100 free URL shortens per month!
+      </p>
+      <button
+        onClick={() => {
+          redirect("/Register");
+        }}
+        className="mt-8 px-6 py-3 bg-blue-600 text-white text-lg font-semibold rounded-lg shadow-md hover:bg-blue-700 transition duration-300"
+      >
+        Get Started
+      </button>
     </div>
   );
 }
