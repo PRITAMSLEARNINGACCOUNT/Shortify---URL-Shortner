@@ -7,6 +7,7 @@ export async function POST(Request: NextRequest) {
     await connectDB();
     const { Plan, UserID } = await Request.json();
     await User.findOneAndUpdate({ _id: UserID }, { Plan: Plan }, { new: true });
+    return NextResponse.json({ success: true });
   } catch (error) {
     if (error instanceof Error) {
       return NextResponse.json(

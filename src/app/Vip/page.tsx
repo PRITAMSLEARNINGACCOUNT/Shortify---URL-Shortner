@@ -9,6 +9,7 @@ import { SubscriptionID } from "../server/getSubscriptionDetails";
 import { verifyPaymentSignature } from "../server/ValidatePayment";
 import Loader from "@/components/Loader";
 import { toast } from "react-toastify";
+import { CustomResponse } from "@/lib/Interfaces";
 const Vip = () => {
   const [Loading, setLoading] = useState<boolean>(false);
   const [MyUser, setMyUser] = useState<UserInterface | null>(null);
@@ -27,7 +28,7 @@ const Vip = () => {
         handler: async function (response: PaymentResponse) {
           // console.log(response);
           if (await verifyPaymentSignature(response)) {
-            await fetch("/api/UpdatePlan", {
+            const R = await fetch("/api/UpdatePlan", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
@@ -37,22 +38,36 @@ const Vip = () => {
                 UserID: MyUser?._id,
               }),
             });
-            toast.success("Payment Successful!Please Login Again", {
-              position: "top-right",
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: "dark",
-            });
-            if (User) {
-              localStorage.removeItem("JWT_TOKEN");
+            if ((R as CustomResponse).success) {
+              toast.success("Payment Successful!Please Login Again", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+              });
+              if (User) {
+                localStorage.removeItem("JWT_TOKEN");
+              } else {
+                signOut();
+              }
+              window.location.href = `/Login`;
             } else {
-              signOut();
+              toast.error("Payment Failed!", {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+              });
+              setLoading(false);
             }
-            window.location.href = `/Login`;
           } else {
             toast.error("Payment Failed!", {
               position: "top-right",
@@ -64,6 +79,7 @@ const Vip = () => {
               progress: undefined,
               theme: "dark",
             });
+            setLoading(false);
           }
         },
         theme: {
@@ -85,7 +101,19 @@ const Vip = () => {
           progress: undefined,
           theme: "dark",
         });
+        setLoading(false);
+        return;
       }
+      toast.error("Unknown Error Occured", {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+      });
     }
   }
   useEffect(() => {
@@ -133,14 +161,75 @@ const Vip = () => {
                 <button
                   disabled={
                     MyUser?.Plan === "Free" ||
-                    MyUser?.Plan === "Free" ||
+                    MyUser?.Plan === "Premium" ||
+                    MyUser?.Plan === "VIP" ||
                     !MyUser
                   }
+                  // onClick={async () => {
+                  //   try {
+                  //     setLoading(true);
+                  //     const R = await fetch("/api/UpdatePlan", {
+                  //       method: "POST",
+                  //       headers: {
+                  //         "Content-Type": "application/json",
+                  //       },
+                  //       body: JSON.stringify({
+                  //         Plan: "Free",
+                  //         UserID: MyUser?._id,
+                  //       }),
+                  //     });
+                  //     if ((R as CustomResponse).success) {
+                  //       toast.success("Plan Downgraded Successfully", {
+                  //         position: "top-right",
+                  //         autoClose: 5000,
+                  //         hideProgressBar: false,
+                  //         closeOnClick: true,
+                  //         pauseOnHover: true,
+                  //         draggable: true,
+                  //         progress: undefined,
+                  //         theme: "dark",
+                  //       });
+                  //       if (User) {
+                  //         localStorage.removeItem("JWT_TOKEN");
+                  //       } else {
+                  //         signOut();
+                  //       }
+                  //       window.location.href = `/Login`;
+                  //     } else {
+                  //       throw new Error("Failed To Downgrade Plan");
+                  //     }
+                  //   } catch (error) {
+                  //     if (error instanceof Error) {
+                  //       toast.error(error.message, {
+                  //         position: "top-right",
+                  //         autoClose: 5000,
+                  //         hideProgressBar: false,
+                  //         closeOnClick: true,
+                  //         pauseOnHover: true,
+                  //         draggable: true,
+                  //         progress: undefined,
+                  //         theme: "dark",
+                  //       });
+                  //       setLoading(false);
+                  //       return;
+                  //     }
+                  //     toast.error("Unknown Error Occured", {
+                  //       position: "top-right",
+                  //       autoClose: 5000,
+                  //       hideProgressBar: false,
+                  //       closeOnClick: true,
+                  //       pauseOnHover: true,
+                  //       draggable: true,
+                  //       progress: undefined,
+                  //       theme: "dark",
+                  //     });
+                  //   }
+                  // }}
                   className="p-3 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg text-lg font-semibold hover:from-pink-500 hover:to-purple-500 transition-all duration-300 disabled:bg-gray-400 disabled:cursor-not-allowed disabled:opacity-50 disabled:text-gray-700"
                 >
                   {Loading ? (
                     <Loader />
-                  ) : MyUser?.Plan === "Free" || MyUser?.Plan === "Free" ? (
+                  ) : MyUser?.Plan === "Free" ? (
                     "Selected Plan"
                   ) : MyUser ? (
                     "Downgrade To Free"
@@ -173,7 +262,9 @@ const Vip = () => {
               <div className="flex justify-center mt-5">
                 <button
                   disabled={
-                    MyUser?.Plan === "VIP" || MyUser?.Plan === "VIP" || !MyUser
+                    MyUser?.Plan === "VIP" ||
+                    MyUser?.Plan === "Premium" ||
+                    !MyUser
                   }
                   onClick={() => {
                     HandlePayment("VIP");
@@ -182,10 +273,12 @@ const Vip = () => {
                 >
                   {Loading ? (
                     <Loader />
-                  ) : MyUser?.Plan === "VIP" || MyUser?.Plan === "VIP" ? (
+                  ) : MyUser?.Plan === "VIP" ? (
                     "Selected Plan"
-                  ) : (
+                  ) : MyUser?.Plan === "Free" ? (
                     "Upgrade To VIP"
+                  ) : (
+                    "Downgrade To VIP"
                   )}
                 </button>
               </div>
@@ -212,11 +305,7 @@ const Vip = () => {
               </div>
               <div className="flex justify-center mt-5">
                 <button
-                  disabled={
-                    MyUser?.Plan === "Premium" ||
-                    MyUser?.Plan === "Premium" ||
-                    !MyUser
-                  }
+                  disabled={MyUser?.Plan === "Premium" || !MyUser}
                   onClick={() => {
                     HandlePayment("Premium");
                   }}
