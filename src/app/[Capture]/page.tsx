@@ -26,7 +26,14 @@ const CapturePage = async (path: { params: Promise<{ Capture: string }> }) => {
       });
       console.log(Link.OriginalUrl);
 
-      return redirect(Link.OriginalUrl);
+      await fetch("api/redirect", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ OriginalUrl: Link.OriginalUrl }),
+      });
+      return;
     }
   } catch (error) {
     console.log(error);
