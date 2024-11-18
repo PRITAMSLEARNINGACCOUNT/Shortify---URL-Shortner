@@ -52,7 +52,7 @@ const Login = () => {
   return (
     <div className="md:p-0 p-5">
       <div className="flex justify-center items-center flex-col md:min-h-[100vh] min-h-[80vh]">
-        <div className="mx-auto shadow-lg shadow-gray-700 rounded-lg border border-opacity-20 border-white min-w-96 px-16 py-12">
+        <div className="mx-auto shadow-lg shadow-gray-700 rounded-lg border border-opacity-20 border-white md:min-w-96 md:px-16 p-10 md:py-12">
           <h1 className="text-2xl font-bold text-center mb-5">
             Login with Shortify
           </h1>

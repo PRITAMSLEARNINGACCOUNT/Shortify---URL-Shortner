@@ -3,8 +3,8 @@ import Link from "next/link";
 const Footer = () => {
   return (
     <footer className="m-3 px-8 py-3 md:w-[35vw] w-[90vw] container mx-auto bg-slate-900 rounded-full backdrop-blur-lg sticky bottom-5">
-      <nav className="flex items-center justify-between">
-        <div>
+      <nav className="flex items-center justify-between ">
+        <div className="md:block hidden">
           Made With ❤️ By{" "}
           <Link
             className="hover:underline"
@@ -13,7 +13,7 @@ const Footer = () => {
             pritamstech
           </Link>
         </div>
-        <ul className="flex gap-3 font-bold text-lg">
+        <ul className="flex md:justify-end justify-center w-full md:w-fit gap-3 font-bold md:text-lg">
           <li>
             <Link href={"/Policies"}>Policies</Link>
           </li>
