@@ -17,11 +17,7 @@ export interface CustomResponse extends Response {
 
   Links: Array<LinkInterface> | null | undefined;
 }
-export interface PathParams {
-  params: {
-    Capture: string;
-  };
-}
+
 export interface PaymentResponse {
   razorpay_payment_id: string;
   razorpay_subscription_id: string;

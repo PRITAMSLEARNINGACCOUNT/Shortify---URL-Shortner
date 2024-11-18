@@ -10,7 +10,7 @@ import Loader from "@/components/Loader";
 import { toast } from "react-toastify";
 const Register = () => {
   const [Loading, setLoading] = useState<boolean>(false);
-  const { JWT_TOKEN } = useContext(Context);
+  const { User } = useContext(Context);
   const { data: session } = useSession();
   async function HandleSubmit(Event: React.FormEvent<HTMLFormElement>) {
     Event.preventDefault();
@@ -48,7 +48,7 @@ const Register = () => {
       });
     }
   }
-  if (session || JWT_TOKEN) {
+  if (session || User) {
     redirect("/Generate");
   }
   return (

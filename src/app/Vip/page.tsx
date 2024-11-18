@@ -70,7 +70,7 @@ const Vip = () => {
           color: "#F37254",
         },
       };
-
+      // @ts-expect-error : No Error Will Come
       const rzp1 = new Razorpay(options);
       rzp1.open();
     } catch (error) {
