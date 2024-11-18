@@ -17,6 +17,7 @@ const CapturePage = (path: { params: Promise<{ Capture: string }> }) => {
     <>
       <div className="min-h-[80vh] flex justify-center items-center">
         {Loading ? <Loader /> : null}
+        <h1 className="text-xl">Please Wait</h1>
       </div>
     </>
   );
