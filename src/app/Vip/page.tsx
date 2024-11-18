@@ -52,7 +52,7 @@ const Vip = () => {
             } else {
               signOut();
             }
-            window.location.href = `${process.env.NEXT_PUBLIC_HOST}/Login`;
+            window.location.href = `/Login`;
           } else {
             toast.error("Payment Failed!", {
               position: "top-right",
