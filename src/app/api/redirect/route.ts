@@ -5,7 +5,7 @@ export async function POST(Reuqest: NextRequest) {
     const { OriginalUrl } = await Reuqest.json();
     console.log(OriginalUrl);
 
-    return NextResponse.redirect(new URL(OriginalUrl), 307);
+    return Response.redirect(OriginalUrl, 307);
   } catch (error) {
     if (error instanceof Error) {
       console.log(error.message);
