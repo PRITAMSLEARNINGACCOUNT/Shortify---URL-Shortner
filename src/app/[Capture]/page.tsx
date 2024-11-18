@@ -3,6 +3,7 @@ import { connectDB } from "@/lib/ConnectMongo";
 import Links from "@/model/Links";
 import User from "@/model/User";
 import { redirect } from "next/navigation";
+import Temp from "../Temp/page";
 
 const CapturePage = async (path: { params: Promise<{ Capture: string }> }) => {
   const params = await path.params;
@@ -25,7 +26,14 @@ const CapturePage = async (path: { params: Promise<{ Capture: string }> }) => {
         $inc: { Clicks: 1 },
       });
       console.log(Link.OriginalUrl);
-      return redirect(`${process.env.NEXT_PUBLIC_HOST}/OriginalLink?url=${encodeURIComponent(Link.OriginalUrl)}`);
+      await fetch(`/api/redirect`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ OriginalUrl: Link.OriginalUrl }),
+      });
+      return;
     }
   } catch (error) {
     console.log(error);
