@@ -29,7 +29,8 @@ const CapturePage = async (path: { params: Promise<{ Capture: string }> }) => {
       console.log(Link);
       console.log(Link.OriginalUrl);
 
-      return redirect(Link.OriginalUrl);
+      window.location.href = Link.OriginalUrl;
+      return;
     }
     return redirect(String(process.env.NEXT_PUBLIC_HOST));
   } catch (error) {
