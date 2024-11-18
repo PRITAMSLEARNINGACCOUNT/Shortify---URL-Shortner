@@ -12,7 +12,8 @@ const CapturePage = async (path: { params: Promise<{ Capture: string }> }) => {
     const Link = await Links.findOne({
       ShortUrl: `${process.env.NEXT_PUBLIC_HOST}/${params.Capture}`,
     });
-    console.log(Link);
+    // console.log(Link);
+    console.log(`${process.env.NEXT_PUBLIC_HOST}/${params.Capture}`);
 
     if (Link) {
       const MyUser = await User.findOne({ _id: Link.UserID });
