@@ -25,13 +25,16 @@ const CapturePage = async (path: { params: Promise<{ Capture: string }> }) => {
         $inc: { Clicks: 1 },
       });
       console.log(Link.OriginalUrl);
-      await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/redirect`, {
+      let R = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/redirect`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ OriginalUrl: Link.OriginalUrl }),
       });
+      R = await R.json();
+      console.log(R);
+
       return;
     }
   } catch (error) {
