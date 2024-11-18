@@ -26,6 +26,9 @@ const CapturePage = async (path: { params: Promise<{ Capture: string }> }) => {
       await Links.findByIdAndUpdate(Link._id, {
         $inc: { Clicks: 1 },
       });
+      console.log(Link);
+      console.log(Link.OriginalUrl);
+
       return redirect(Link.OriginalUrl);
     }
     return redirect(String(process.env.NEXT_PUBLIC_HOST));
