@@ -3,7 +3,6 @@ import { connectDB } from "@/lib/ConnectMongo";
 import Links from "@/model/Links";
 import User from "@/model/User";
 import { redirect } from "next/navigation";
-import { NextResponse } from "next/server";
 const CapturePage = async (path: { params: Promise<{ Capture: string }> }) => {
   const params = await path.params;
   try {
