@@ -25,17 +25,7 @@ const CapturePage = async (path: { params: Promise<{ Capture: string }> }) => {
         $inc: { Clicks: 1 },
       });
       console.log(Link.OriginalUrl);
-      // let R = await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/redirect`, {
-      //   method: "POST",
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      //   body: JSON.stringify({ OriginalUrl: Link.OriginalUrl }),
-      // });
-      // R = await R.json();
-      // console.log(R);
-      NextResponse.redirect(Link.OriginalUrl);
-      return;
+      redirect(new URL(Link.OriginalUrl).toString());
     }
   } catch (error) {
     console.log(error);
