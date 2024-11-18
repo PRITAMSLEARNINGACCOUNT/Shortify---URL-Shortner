@@ -26,8 +26,9 @@ const CapturePage = async (path: { params: Promise<{ Capture: string }> }) => {
       });
       return redirect(Link.OriginalUrl);
     }
-    return redirect(String(process.env.NEXT_PUBLIC_HOST));
   } catch (error) {
+    console.log("Error Occured");
+
     if (error instanceof Error) {
       return redirect(String(process.env.NEXT_PUBLIC_HOST));
     }
