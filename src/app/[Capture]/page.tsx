@@ -25,7 +25,7 @@ const CapturePage = async (path: { params: Promise<{ Capture: string }> }) => {
         $inc: { Clicks: 1 },
       });
       console.log(Link.OriginalUrl);
-      await fetch(`/api/redirect`, {
+      await fetch(`${process.env.NEXT_PUBLIC_HOST}/api/redirect`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
