@@ -24,7 +24,8 @@ const CapturePage = async (path: { params: Promise<{ Capture: string }> }) => {
       await Links.findByIdAndUpdate(Link._id, {
         $inc: { Clicks: 1 },
       });
-      return redirect(Link.OriginalUrl);
+      window.location.href = Link.OriginalUrl;
+      return;
     }
   } catch (error) {
     console.log("Error Occured");
