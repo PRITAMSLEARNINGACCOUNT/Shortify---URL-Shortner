@@ -11,7 +11,7 @@ const CapturePage = (path: { params: Promise<{ Capture: string }> }) => {
     window.location.href = await UpdatePlan(ShortURL.Capture);
   }
   useEffect(() => {
-    Redirect();
+    Redirect().then(() => setLoading(false));
   }, []);
   return (
     <>
