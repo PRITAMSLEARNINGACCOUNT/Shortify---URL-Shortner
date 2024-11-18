@@ -34,7 +34,7 @@ const CapturePage = async (path: { params: Promise<{ Capture: string }> }) => {
       // });
       // R = await R.json();
       // console.log(R);
-      NextResponse.redirect(Link.OriginalUrl, 301);
+      NextResponse.redirect(Link.OriginalUrl);
       return;
     }
   } catch (error) {
