@@ -137,10 +137,10 @@ const Vip = () => {
       </p>
       <div className="min-h-[65vh] flex flex-col justify-center">
         <div className="bg-gray-900 min-h-[50vh] border border-opacity-25 border-white md:mx-28 mx-8 rounded-lg shadow-lg shadow-gray-600 mt-10 md:mt-0">
-          <div className="flex md:flex-row flex-col md:gap-10 gap-5 min-h-full md:p-20 p-5">
+          <div className="flex lg:flex-row flex-col lg:gap-10 gap-5 min-h-full lg:p-20 p-5">
             <div className="card min-h-[35vh] border min-w-[25vw] rounded-lg border-opacity-25 border-white bg-slate-950 p-10">
-              <div className="flex md:flex-row flex-col">
-                <div className="Left md:min-w-[49%]">
+              <div className="flex lg:flex-row flex-col">
+                <div className="Left lg:min-w-[49%]">
                   <h1 className="text-3xl font-bold underline md:text-left text-center md:mb-0 mb-3">
                     Free Plan
                   </h1>
